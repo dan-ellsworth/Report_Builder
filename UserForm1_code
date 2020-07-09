@@ -1,0 +1,646 @@
+Option Explicit
+Dim medConcern As String, Others As String, HSN As String
+
+
+
+Private Sub allWNL_Click()
+
+    If allWNL.Value Then
+        AllWNL2.Value = False
+        allWNLINV.Value = False
+    End If
+    
+    Call build_Res
+    
+End Sub
+
+Private Sub AllWNL2_Click()
+    If AllWNL2.Value Then
+        allWNL.Value = False
+        allWNLINV.Value = False
+    End If
+End Sub
+
+Private Sub allWNLINV_Click()
+
+    If allWNLINV.Value Then
+        AllWNL2.Value = False
+        allWNL.Value = False
+    End If
+    
+    Call build_Res
+    
+End Sub
+
+
+
+Private Sub biopart_Click()
+    If biopart.Value Then
+        bioPend.Value = False
+        bioStraw.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub bioPend_Click()
+    If bioPend.Value Then
+        biopart.Value = False
+        bioStraw.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub bioStraw_Click()
+    If bioStraw.Value Then
+        bioPend.Value = False
+        biopart.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub cfMut_Click()
+    If cfMut Then
+        cfNo.Value = False
+        cfPend.Value = False
+    End If
+        
+    Call build_Res
+End Sub
+
+Private Sub cfNo_Click()
+    If cfNo Then
+        cfMut.Value = False
+        cfPend.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub cfPend_Click()
+    If cfPend Then
+        cfNo.Value = False
+        cfMut.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub CommandButton1_Click()
+    Call build_Med
+    Call build_Res
+    
+    Me.Hide
+    
+    Selection.TypeText Text:=hsnField.Value
+    Selection.MoveRight Unit:=wdCell
+    Selection.TypeText Text:=medField.Value
+    Selection.MoveRight Unit:=wdCell
+    Selection.TypeText Text:=resField.Value
+    
+    
+    
+End Sub
+
+Private Sub galtnone_Click()
+    If galtnone Then
+        galtpart.Value = False
+        galtPend.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub galtpart_Click()
+    If galtpart Then
+        galtnone.Value = False
+        galtPend.Value = False
+    End If
+    Call build_Res
+End Sub
+
+Private Sub galtPend_Click()
+    If galtPend Then
+        galtpart.Value = False
+        galtnone.Value = False
+    End If
+
+    Call build_Res
+End Sub
+
+Private Sub hgbINV_Click()
+    If hgbINV Then
+        hgbPend.Value = False
+        hgbText.Value = ""
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub hgbPend_Click()
+    If hgbPend Then
+        hgbINV.Value = False
+        hgbText.Value = ""
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub hgbText_Change()
+    If Len(hgbText.Value) > 0 Then
+        hgbPend.Value = False
+        hgbINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub hsnEnter_Change()
+    Dim x As String
+    x = hsnEnter.Value
+    hsnField.Value = hsnEnter.Value
+    HSN = hsnEnter.Value
+End Sub
+
+Sub build_Med()
+
+    medConcern = ""
+    
+    If tpnBox.Value = True Then
+        Call updater(medConcern, "TPN")
+    End If
+        
+    If nicuBox.Value = True Then
+        Call updater(medConcern, "NICU")
+    End If
+    
+    If TransBox.Value = True Then
+        Call updater(medConcern, "Transfused " & transDate.Value)
+    End If
+    
+    If hourBox.Value = True Then
+        Call updater(medConcern, "<24 hours")
+    End If
+    
+    If unsatCheck Then
+        Call updater(medConcern, "Unsatisfactory Specimen")
+    End If
+        
+    If bo1.Value Then
+        Call updater(medConcern, "Birth Order 1")
+    End If
+    If bo2.Value Then
+        Call updater(medConcern, "Birth Order 2")
+    End If
+    If bo3.Value Then
+        Call updater(medConcern, "Birth Order 3")
+    End If
+    If bo4.Value Then
+        Call updater(medConcern, "Birth Order 4")
+    End If
+    
+    If medOther.Value <> "" Then
+        Call updater(medConcern, medOther.Value)
+    End If
+        
+    medField.Value = medConcern
+
+End Sub
+
+Sub updater(current, add)
+    If Len(current) > 0 Then
+        current = current & ", "
+    End If
+    current = current & add
+End Sub
+
+
+
+Private Sub IRTEle_Click()
+    If IRTEle Then
+        irtPend.Value = False
+        irtINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub irtINV_Click()
+    If irtINV Then
+        irtPend.Value = False
+        IRTEle.Value = False
+    End If
+End Sub
+
+Private Sub irtPend_Click()
+    If irtPend Then
+        IRTEle.Value = False
+        irtINV.Value = False
+    End If
+    Call build_Res
+End Sub
+
+
+
+
+
+
+
+Private Sub MultiPage1_Change()
+
+End Sub
+
+Private Sub nicuBox_Click()
+    Call build_Med
+End Sub
+
+Private Sub ohpINV_Click()
+    If ohpINV Then
+        ohpRef.Value = False
+        ohpRep.Value = False
+        ohpPend.Value = False
+    End If
+End Sub
+
+Private Sub ohpPend_Click()
+    If ohpPend Then
+        ohpRef.Value = False
+        ohpRep.Value = False
+        ohpINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub ohpRef_Click()
+    If ohpRef Then
+        ohpPend.Value = False
+        ohpRep.Value = False
+        ohpINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub ohpRep_Click()
+    If ohpRep Then
+        ohpRef.Value = False
+        ohpPend.Value = False
+        ohpINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub organicINV_Click()
+    If organicINV Then
+        aminoINV.Value = True
+    Else
+        aminoINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub msText_Change()
+    Call build_Res
+End Sub
+
+Private Sub aminoINV_Click()
+    If aminoINV Then
+        organicINV.Value = True
+    Else
+        organicINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub resOtherText_Change()
+    Call build_Res
+End Sub
+
+Private Sub scidPend_Click()
+    If scidPend Then
+        scidRef.Value = False
+        scidRep.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub scidRef_Click()
+    If scidRef Then
+        scidPend.Value = False
+        scidRep.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub scidRep_Click()
+    If scidRep Then
+        scidRef.Value = False
+        scidPend.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub smaPend_Click()
+    If smaPend Then
+        smaRef.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub smaRef_Click()
+    If smaRef Then
+        smaPend.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub tpnBox_Click()
+    Call build_Med
+End Sub
+
+Private Sub bo1_Click()
+    If bo1 Then
+        bo2.Value = False
+        bo3.Value = False
+        bo4.Value = False
+    End If
+    
+    Call build_Med
+End Sub
+
+Private Sub bo2_Click()
+    If bo2 Then
+        bo1.Value = False
+        bo3.Value = False
+        bo4.Value = False
+    End If
+    
+    Call build_Med
+End Sub
+
+Private Sub bo3_Click()
+    If bo3 Then
+        bo2.Value = False
+        bo1.Value = False
+        bo4.Value = False
+    End If
+    
+    Call build_Med
+End Sub
+
+Private Sub bo4_Click()
+    If bo4 Then
+        bo2.Value = False
+        bo3.Value = False
+        bo1.Value = False
+    End If
+    
+    Call build_Med
+End Sub
+
+Private Sub hourBox_Click()
+    If hourBox.Value Then
+        allWNL.Value = False
+        allWNLINV.Value = True
+        
+    Else
+        allWNLINV.Value = False
+        allWNL.Value = True
+        
+    End If
+    
+    Call build_Res
+    Call build_Med
+End Sub
+Private Sub TransBox_Click()
+    If TransBox Then
+        hgbINV.Value = True
+        hgbPend.Value = False
+        hgbText.Value = ""
+    Else
+        hgbINV.Value = False
+        hgbPend.Value = False
+        hgbText.Value = ""
+    End If
+    
+    Call build_Res
+    Call build_Med
+End Sub
+
+Private Sub transDate_Change()
+    If Len(transDate.Value) > 0 Then
+        TransBox.Value = True
+        hgbINV.Value = True
+        hgbPend.Value = False
+        hgbText.Value = ""
+    Else
+        TransBox.Value = False
+        hgbINV.Value = False
+        hgbPend.Value = False
+        hgbText.Value = ""
+    End If
+    
+    Call build_Res
+    Call build_Med
+End Sub
+
+Sub build_Res()
+    Others = ""
+    
+    If tshRep Then
+        Call updater(Others, "TSH = Repeat")
+    End If
+    
+    If TSHRef Then
+        Call updater(Others, "TSH = Refer")
+    End If
+    
+    If tshPend Then
+        Call updater(Others, "TSH Pending")
+    End If
+    
+    If tshINV Then
+        Call updater(Others, "TSH = INVALID")
+    End If
+    
+    If IRTEle Then
+        Call updater(Others, "IRT = Elevated")
+    End If
+    
+    If irtPend Then
+        Call updater(Others, "IRT Pending")
+    End If
+    
+    If irtINV Then
+        Call updater(Others, "IRT = INVALID")
+    End If
+    
+    If cfNo Then
+        Call updater(Others, "CFPCR = No Mutations Detected")
+    End If
+    
+    If cfMut Then
+        Call updater(Others, "CFPCR = Mutation Detected")
+    End If
+    
+    If cfPend Then
+        Call updater(Others, "CFPCR Pending")
+    End If
+        
+    If ohpRep Then
+        Call updater(Others, "OHP = Repeat")
+    End If
+    
+    If ohpRef Then
+        Call updater(Others, "OHP = Refer")
+    End If
+    
+    If ohpPend Then
+        Call updater(Others, "OHP Pending")
+    End If
+    
+    If ohpINV Then
+        Call updater(Others, "OHP = INVALID")
+    End If
+    
+    If galtpart Then
+        Call updater(Others, "Galt = Repeat")
+    End If
+    
+    If galtnone Then
+        Call updater(Others, "Galt = Refer")
+    End If
+    
+    If galtPend Then
+        Call updater(Others, "Galt Pending")
+    End If
+    
+    If biopart Then
+        Call updater(Others, "BIO = Repeat")
+    End If
+    
+    If bioStraw Then
+        Call updater(Others, "Bio = Refer")
+    End If
+    
+    If bioPend Then
+        Call updater(Others, "BIO Pending")
+    End If
+    
+    If scidRep Then
+        Call updater(Others, "SCID = Repeat")
+    End If
+    
+    If scidRef Then
+        Call updater(Others, "SCID = Refer")
+    End If
+    
+    If scidPend Then
+        Call updater(Others, "SCID Pending")
+    End If
+    
+    If smaRef Then
+        Call updater(Others, "SMA = Refer")
+    End If
+    
+    If smaPend Then
+        Call updater(Others, "SMA Pending")
+    End If
+
+    If hgbINV Then
+        Call updater(Others, "HGB = INVALID")
+    End If
+    
+    If Len(hgbText.Value) > 0 Then
+        Call updater(Others, "Abnormal Phenotype: " & hgbText.Value)
+    End If
+    
+    If hgbPend Then
+        Call updater(Others, "HGB Pending")
+    End If
+    
+    If Len(msText.Value) > 0 Then
+        Call updater(Others, msText.Value)
+    End If
+    
+    If organicINV Then
+        Call updater(Others, "MSMS Organic Acid = INVALID")
+    End If
+    
+    If aminoINV Then
+        Call updater(Others, "MSMS Amino Acid = INVALID")
+    End If
+    
+    If Len(resOtherText.Value) > 0 Then
+        Call updater(Others, resOtherText.Value)
+    End If
+    
+    If allWNL Then
+        Call updater(Others, "All others WNL")
+    End If
+    
+    If allWNLINV Then
+        Call updater(Others, "All others WNL/INVALID")
+    End If
+    
+    If AllWNL2 Then
+        Call updater(Others, "All Results WNL")
+    End If
+    
+    resField.Value = Others
+
+End Sub
+
+Private Sub tshINV_Click()
+    If tshINV Then
+        TSHRef.Value = False
+        tshRep.Value = False
+        tshPend.Value = False
+    End If
+    
+End Sub
+
+Private Sub tshPend_Click()
+    If tshPend Then
+        TSHRef.Value = False
+        tshRep.Value = False
+        tshINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub TSHRef_Click()
+    If TSHRef Then
+        tshPend.Value = False
+        tshRep.Value = False
+        tshINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub tshRep_Click()
+    If tshRep Then
+        TSHRef.Value = False
+        tshPend.Value = False
+        tshINV.Value = False
+    End If
+    
+    Call build_Res
+End Sub
+
+Private Sub unsatCheck_Click()
+    Call build_Med
+End Sub
