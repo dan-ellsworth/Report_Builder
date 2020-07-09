@@ -1,0 +1,221 @@
+Option Explicit
+
+Private Sub amCheck_Click()
+    If amCheck Then
+        pmCheck.Value = False
+    End If
+End Sub
+Private Sub pmCheck_Click()
+    If pmCheck Then
+        amCheck.Value = False
+    End If
+End Sub
+
+Private Sub Lab_List_Click()
+    If Lab_List Then
+        Misc_Abnormal.Value = False
+        MS_Abnormal.Value = False
+        time_Crit.Value = False
+    End If
+End Sub
+
+Private Sub Misc_Abnormal_Click()
+    If Misc_Abnormal Then
+        Lab_List.Value = False
+        MS_Abnormal.Value = False
+        time_Crit.Value = False
+    End If
+End Sub
+
+Private Sub MS_Abnormal_Click()
+    If MS_Abnormal Then
+        Misc_Abnormal.Value = False
+        Lab_List.Value = False
+        time_Crit.Value = False
+    End If
+End Sub
+
+
+
+Private Sub report_done_Click()
+    Dim fPath As String, fName As String, i As Variant, j As Variant, dlgFile As FileDialog, suff As String
+    Dim openprev
+    
+    
+    fPath = "\\labshared\neonatal1\Abnormal Specimens\" & Format(Date, "YYYY") & "\" & Format(Date, "MM") & " - " & Format(Date, "MMMM") & "\"
+    'fPath = "C:\Users\daniel.ellsworth\Desktop\"
+    fName = Format(Date, "MM.DD.YYYY") & " - "
+    
+    If amCheck Then
+        suff = " - AM"
+    ElseIf pmCheck Then
+        suff = " - PM"
+    Else
+        suff = ""
+    End If
+    
+    Me.Hide
+    
+    If time_Crit Then
+        fName = fName & "Time Critical and High Risk" & suff & ".docx"
+    ElseIf MS_Abnormal Then
+        fName = fName & "MS Abnormal" & suff & ".docx"
+    ElseIf Misc_Abnormal Then
+        fName = fName & "Miscellaneous Abnormal" & suff & ".docx"
+    ElseIf Lab_List Then
+        fName = fName & "Lab List of Daily Abnormals" & suff & ".docx"
+    End If
+    
+    If Len(Dir(fPath & fName)) < 1 Then
+        ActiveDocument.SaveAs2 FileName:=fPath & fName, FileFormat:=wdFormatDocumentDefault
+        
+            If time_Crit Then
+                Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                    "Time Critical and High Risk"
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                
+                ThisDocument.Time_Critical
+                
+            ElseIf MS_Abnormal Then
+                Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & "MS Abnormal"
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                ThisDocument.MS_Abnormal
+                
+                
+            ElseIf Misc_Abnormal Then
+                Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                "Miscellaneous Abnormal"
+                
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                
+                ThisDocument.Misc_Abnormal
+        
+            ElseIf Lab_List Then
+                Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                "Lab List of Daily Abnormals"
+                
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                Selection.TypeParagraph
+                
+                Set dlgFile = Application.FileDialog(msoFileDialogFilePicker)
+        
+                With dlgFile
+                    .AllowMultiSelect = True
+                    .Show
+                    i = .SelectedItems.Count
+                End With
+                For j = 1 To i
+                    Selection.InsertFile dlgFile.SelectedItems.Item(j)
+                Next j
+                
+            End If
+        Else
+        
+            openprev = MsgBox("It appears that " & fName & " already exists.  do you want to open that file?", vbQuestion + vbYesNo)
+            
+            If openprev = vbYes Then
+            
+                Selection.InsertFile (fPath & fName)
+                
+                Selection.TypeText (" ")
+                
+                If time_Crit Then
+                    ThisDocument.Time_Critical
+                    
+                ElseIf MS_Abnormal Then
+                    ThisDocument.MS_Abnormal
+                    
+                ElseIf Misc_Abnormal Then
+                    ThisDocument.Misc_Abnormal
+                    
+                ElseIf Lab_List Then
+                    Set dlgFile = Application.FileDialog(msoFileDialogFilePicker)
+            
+                    With dlgFile
+                        .AllowMultiSelect = True
+                        .Show
+                        i = .SelectedItems.Count
+                    End With
+                    For j = 1 To i
+                        Selection.InsertFile dlgFile.SelectedItems.Item(j)
+                    Next j
+                    
+                End If
+                
+                ActiveDocument.SaveAs2 FileName:=fPath & fName, FileFormat:=wdFormatDocumentDefault
+                
+            Else
+                If time_Crit Then
+                    Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                        "Time Critical and High Risk"
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    
+                    ThisDocument.Time_Critical
+                    
+                ElseIf MS_Abnormal Then
+                    Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & "MS Abnormal"
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    ThisDocument.MS_Abnormal
+                    
+                    
+                ElseIf Misc_Abnormal Then
+                    Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                    "Miscellaneous Abnormal"
+                    
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    
+                    ThisDocument.Misc_Abnormal
+            
+                ElseIf Lab_List Then
+                    Selection.TypeText Text:=Date & vbTab & vbTab & vbTab & _
+                    "Lab List of Daily Abnormals"
+                    
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    Selection.TypeParagraph
+                    
+                    Set dlgFile = Application.FileDialog(msoFileDialogFilePicker)
+            
+                    With dlgFile
+                        .AllowMultiSelect = True
+                        .Show
+                        i = .SelectedItems.Count
+                    End With
+                    For j = 1 To i
+                        Selection.InsertFile dlgFile.SelectedItems.Item(j)
+                    Next j
+                    
+                End If
+                
+                ActiveDocument.SaveAs2 FileName:=fPath & fName, FileFormat:=wdFormatDocumentDefault
+                
+            End If
+        End If
+    
+
+End Sub
+
+Private Sub time_Crit_Click()
+    If time_Crit Then
+        Misc_Abnormal.Value = False
+        MS_Abnormal.Value = False
+        Lab_List.Value = False
+    End If
+End Sub
+
+Private Sub UserForm_Click()
+
+End Sub
