@@ -1,0 +1,161 @@
+Option Explicit
+Dim test As String
+
+
+
+Sub Report_Builder()
+'
+' TEST Macro
+'
+'
+    Dim s As String, i As Variant, j As Variant, fPath As String, fName As String, dlgFile As FileDialog
+    
+    reportform
+        
+End Sub
+
+Sub Time_Critical()
+
+    Dim sNumber As Integer, i As Integer
+    
+    'Collect the number of samples that will be on the Time Critical
+    
+    sNumber = InputBox("How Many Samples are there for this Time Critical?", "", 1)
+    
+    'For each sample Make a bold line and space to paste in a picture
+            
+    For i = 1 To sNumber
+        Selection.Font.Bold = wdToggle
+        Selection.TypeText Text:="Initial - Unconfirmed"
+        Selection.Font.Bold = wdToggle
+        Selection.TypeParagraph
+        Selection.TypeParagraph
+        Selection.TypeParagraph
+    Next i
+
+End Sub
+
+Sub MS_Abnormal()
+
+    Dim i As Integer, j As Integer, dlgFile As FileDialog
+    Dim cName As String, cTest As String, cSevere As String, cFullPanel As Boolean
+    cFullPanel = False
+    
+    i = vbYes
+    cFullPanel = False
+        
+    While i = vbYes
+        cTest = "Confirmed - " & InputBox("What test is Abnormal?", "Test", "PKU") & " "
+        cSevere = InputBox("What is the Severity?", "Severity", "Repeat/Refer")
+        cTest = cTest & cSevere
+        If cSevere = "Refer" Then
+            cFullPanel = True
+        End If
+        
+        cName = InputBox("What is the Patient Name?", "", "Last, First")
+        
+        Selection.Font.Bold = wdToggle
+        Selection.TypeText Text:=cTest
+        Selection.Font.Bold = wdToggle
+        Selection.TypeParagraph
+        Selection.TypeText Text:=cName
+        ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=1, NumColumns:= _
+            3, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:= _
+            wdAutoFitFixed
+            
+        Selection.TypeText Text:="Current HSN: "
+        OptionForm
+
+        j = MsgBox("Is there a linked HSN?", vbQuestion + vbYesNo)
+        While j = vbYes
+
+            Selection.InsertRowsBelow 1
+            Selection.TypeText Text:="Linked HSN: "
+            OptionForm
+            j = MsgBox("Is there another linked HSN?", vbQuestion + vbYesNo)
+        Wend
+        
+        Selection.MoveDown Unit:=wdLine, Count:=1
+        Selection.TypeParagraph
+        Selection.TypeParagraph
+
+        
+        i = MsgBox("Is there another Abnormal Specimen?", vbQuestion + vbYesNo)
+    Wend
+
+    If cFullPanel Then
+        MsgBox ("Remember to create a full panel for any refer specimens.")
+    End If
+    
+
+End Sub
+
+Sub Misc_Abnormal()
+
+    Dim i As Integer, j As Integer, dlgFile As FileDialog
+    Dim cName As String, cTest As String, cSevere As String
+    
+
+
+    i = vbYes
+    While i = vbYes
+        cTest = "Confirmed - " & InputBox("What test is Abnormal?", "Test", "PKU") & " " & InputBox("What is the Severity?", "Severity", "Repeat/Refer")
+        cName = InputBox("What is the Patient Name?", "", "Last, First")
+        
+        Selection.Font.Bold = wdToggle
+        Selection.TypeText Text:=cTest
+        Selection.Font.Bold = wdToggle
+        Selection.TypeParagraph
+        Selection.TypeText Text:=cName
+        ActiveDocument.Tables.add Range:=Selection.Range, NumRows:=1, NumColumns:= _
+            3, DefaultTableBehavior:=wdWord9TableBehavior, AutoFitBehavior:= _
+            wdAutoFitFixed
+        Selection.TypeText Text:="Current HSN: "
+        OptionForm
+
+        j = MsgBox("Is there a linked HSN?", vbQuestion + vbYesNo)
+        While j = vbYes
+
+            Selection.InsertRowsBelow 1
+            Selection.TypeText Text:="Linked HSN: "
+            OptionForm
+            j = MsgBox("Is there another linked HSN?", vbQuestion + vbYesNo)
+        Wend
+        
+        Selection.MoveDown Unit:=wdLine, Count:=1
+        Selection.TypeParagraph
+        Selection.TypeParagraph
+        
+        
+        i = MsgBox("Is there another Abnormal Specimen?", vbQuestion + vbYesNo)
+    Wend
+
+End Sub
+
+Public Function OptionForm()
+    
+    Dim oForm As UserForm1
+    Set oForm = New UserForm1
+    oForm.Show
+    
+End Function
+
+Public Function reportform()
+
+    Dim pForm As UserForm2
+    Set pForm = New UserForm2
+    pForm.Show
+    
+End Function
+
+
+Private Sub Document_Open()
+'
+' TEST Macro
+'
+'
+    Report_Builder
+    
+End Sub
+
+
